@@ -55,7 +55,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.net.ServerSocketFactory;
- 
+ import javax.xml.crypto.Data;
+
  public class RemoteCommand
    implements Runnable
  {
@@ -235,11 +236,12 @@ import javax.net.ServerSocketFactory;
        
        this.thread = Thread.currentThread();
        clientMap.put(this.thread, this);
-       
+
        BufferedInputStream bis = new BufferedInputStream(this.socket.getInputStream(), this.socket.getReceiveBufferSize());
        BufferedOutputStream bos = new BufferedOutputStream(this.socket.getOutputStream(), this.socket.getSendBufferSize());
        DataInputStream dis = new DataInputStream(new CountedInputStream(bis, this.statObj));
        DataOutputStream dos = new DataOutputStream(new CountedOutputStream(bos, this.statObj));
+
        if (!negotiateProtocol(dis, dos)) {
          return;
        }
